@@ -16,6 +16,17 @@ const discountRequests = [];
 const app = express();
 app.use(bodyParser.json());
 
+// Enable CORS for cross-origin requests from Shopify theme or other domains
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Helper: generate simple IDs
 function generateId() {
   return Math.random().toString(36).substr(2, 9);
